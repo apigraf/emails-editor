@@ -7,7 +7,7 @@ const path = require('path');
 const commonConfig = require('./webpack.common');
 
 const sourcePath = path.join(__dirname, '../app');
-const aotGeneratedPath = path.join(__dirname, '../aot');
+const aotGeneratedPath = path.join(__dirname, '../app/$$_gendir');
 
 module.exports = webpackMerge(commonConfig, {
     module: {
@@ -15,7 +15,7 @@ module.exports = webpackMerge(commonConfig, {
             {
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
                 include: [sourcePath, aotGeneratedPath],
-                use: ['@ngtools/webpack']
+                use: ['@ngtools/webpack', 'angular2-template-loader']
             }
         ]
     },
@@ -38,11 +38,6 @@ module.exports = webpackMerge(commonConfig, {
                 comments: false
             },
             sourceMap: true
-        }),
-
-        new webpack.LoaderOptionsPlugin({
-            minimize: true,
-            debug: false
         }),
 
         new AngularCompilerPlugin({

@@ -1,0 +1,13 @@
+.emails-editor((click)="setFocusToInput()")
+    .emails-editor__email(*ngFor="let email of emails",
+        [class.emails-editor__email_invalid]="!emailService.isValid(email)")
+        span([innerText]="email")
+        .remove((click)="removeEmail(email)") &times;
+    form.emails-editor__form([formGroup]="emailForm")
+        input(
+        type="text",
+        placeholder="add more people...",
+        formControlName="emailControl",
+        (keydown)="onKeydown($event)",
+        (paste)="onPaste($event)",
+        (blur)="onBlur()")

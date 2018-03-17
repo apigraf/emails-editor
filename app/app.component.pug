@@ -1,0 +1,9 @@
+.app
+    .wrapper
+        .container.container_content
+            span.title Share “Board name” with others
+            form(#form="ngForm")
+                emails-editor([(ngModel)]="emails", name="emails" )
+        .container.container_footer
+            button.btn.btn_blue((click)="addRandomEmail()") Add email
+            button.btn.btn_blue((click)="getEmailsCount()") Get emails count

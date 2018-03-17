@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
 const sourcePath = path.join(__dirname, '../app');
@@ -11,8 +10,7 @@ module.exports = {
     context: sourcePath,
 
     entry: [
-        'index.ts',
-        'main.scss'
+        'index.ts'
     ],
 
     output: {
@@ -31,11 +29,27 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.pug$/,
+                include: sourcePath,
+                use: [
+                    {
+                        loader: 'html-loader'
+                    },
+                    {
+                        loader: 'pug-html-loader',
+                        options: {
+                            doctype: 'html',
+                            data: {
+                                space: ' '
+                            }
+                        }
+                    }
+                ]
+            },
+            {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
-                })
+                include: sourcePath,
+                use: ['to-string-loader', 'css-loader', 'sass-loader']
             }
         ]
     },
@@ -43,12 +57,6 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html'
-        }),
-
-        new ExtractTextPlugin({
-            filename: 'main.[chunkhash].css',
-            disable: false,
-            allChunks: true
         }),
 
         // fixes WARNING Critical dependency: the request of a dependency is an expression
